@@ -9,15 +9,20 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-var actionStore = host.Services.GetRequiredService<ActionVectorStore>();
-var results = await actionStore.QueryAsync("i want to insert a product");
-
-await foreach(var result in results.Results)
+while (true)
 {
-    Console.WriteLine($"Type: {result.Record.Type}");
-    Console.WriteLine($"Description: {result.Record.Description}");
-    Console.WriteLine($"Score: {result.Score}");
-    Console.WriteLine();
+    Console.Write("> ");
+    var input = Console.ReadLine();
+    
+    var actionStore = host.Services.GetRequiredService<ActionVectorStore>();
+    var results = await actionStore.QueryAsync("i want to insert a product");
+    await foreach(var result in results.Results)
+    {
+        Console.WriteLine($"Type: {result.Record.Type}");
+        Console.WriteLine($"Description: {result.Record.Description}");
+        Console.WriteLine($"Score: {result.Score}");
+        Console.WriteLine();
+    }
 }
 
 var prompt = $@"
